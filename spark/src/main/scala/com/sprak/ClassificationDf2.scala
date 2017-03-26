@@ -24,7 +24,7 @@ object ClassificationDf2 {
     val url = "jdbc:mysql://localhost:3306/test"
     val driver = "com.mysql.jdbc.Driver"
     val username = "root"
-    val passwoed = "mostwanted12"
+    val passwoed = "xxxxxxx"
     var connection: Connection = null
     try{
       
