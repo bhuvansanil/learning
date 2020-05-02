@@ -46,8 +46,15 @@ def local_get(dir_name,**kwargs):
     return response
 
 
-
-
+@app.route('/impala/refresh', methods=['POST'])
+def impala_query(**kwargs):
+    try:
+        hadoop = Hadoop()
+        rep = hadoop.impala_refresh()
+        response = make_response(jsonify(rep))
+    except Exception as e:
+        response = make_response(jsonify({"ERROR While getting Local Dir": str(e)}), http.HTTPStatus.INTERNAL_SERVER_ERROR)
+    return response
 
 
 

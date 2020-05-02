@@ -8,6 +8,7 @@ from app.exception.custom_exception import InvalidDirError
 import datetime
 import set_env
 import configparser
+from impala.dbapi import connect
 
 
 def run_cmd(args_list):
@@ -72,3 +73,23 @@ class Hadoop:
                 x = {'name': entry.name, 'size': size}
                 output.append(x)
         return output
+
+    def impala_refresh(self):
+        lo_query = self.configs['impala']['refresh_query']
+        final_query = self.configs['impala']['final_query']
+        date_1 = datetime.datetime.now()
+        conn = connect(host='192.168.101.69', port=21050)
+        cursor = conn.cursor()
+        cursor.execute(lo_query)
+        lo_status = cursor.description
+        cursor.execute(final_query)
+        final_status = cursor.description
+        date_2 = datetime.datetime.now()
+        difference = date_2 - date_1
+        message = f'Time taken to refresh Imapala  ${difference}'
+        query_output = f'Refresh Status:{lo_status} Insert Stats: {final_status}'
+        return {'message':message,'Query_status':query_output}
+
+
+
+
